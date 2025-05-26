@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
     
-    <title>Функционал пользователя - Лабораторные работы</title>
+    <title>Различия между threading, multiprocessing и async в Python - Лабораторные работы</title>
     
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
@@ -75,19 +75,19 @@
                 
                 
                 
-                    <li class="dropdown active">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">1 лаба <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 <li >
-    <a href="../1/">Серверное приложение на FastAPI</a>
+    <a href="../../Lr1/1/">Серверное приложение на FastAPI</a>
 </li>
 
                         
                             
-<li class="active">
-    <a href="./">Функционал пользователя</a>
+<li >
+    <a href="../../Lr1/2/">Функционал пользователя</a>
 </li>
 
                         
@@ -117,13 +117,13 @@
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">3 лаба <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
-<li >
-    <a href="../../Lr3/1/">Различия между threading, multiprocessing и async в Python</a>
+<li class="active">
+    <a href="./">Различия между threading, multiprocessing и async в Python</a>
 </li>
 
                         
@@ -167,12 +167,12 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../1/">
+                        <a rel="prev" href="../../Lr2/2/">
                             <i class="fas fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="next" href="../../Lr2/1/">
+                        <a rel="next" href="../../Practice/1/">
                             Next <i class="fas fa-arrow-right"></i>
                         </a>
                     </li>
@@ -186,99 +186,233 @@
         
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="first-level active"><a href="#_1">Описание задания</a></li>
-            <li class="second-level"><a href="#_2">Стэк реализации</a></li>
+        <li class="first-level active"><a href="#fastapi-docker">Упаковка FastAPI приложения в Docker, Работа с источниками данных и Очереди</a></li>
+            <li class="second-level"><a href="#1-fastapi-docker">Подзадача 1: Упаковка FastAPI приложения, базы данных и парсера данных в Docker</a></li>
                 
-            <li class="second-level"><a href="#_3">Запуск сервера</a></li>
+            <li class="second-level"><a href="#2-fastapi">Подзадача 2: Вызов парсера из FastAPI</a></li>
                 
-            <li class="second-level"><a href="#_4">Запуск клиента</a></li>
+            <li class="second-level"><a href="#3-fastapi">Подзадача 3: Вызов парсера из FastAPI через очередь</a></li>
                 
-            <li class="second-level"><a href="#_5">Код для сервера</a></li>
-                
-            <li class="second-level"><a href="#_6">Код для клиента</a></li>
-                
-        <li class="first-level "><a href="#_7">Описание реализации</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="_1">Описание задания</h1>
-<p>Реализовать клиентскую и серверную часть приложения. Клиент запрашивает выполнение математической операции, параметры которой вводятся с клавиатуры. Сервер обрабатывает данные и возвращает результат клиенту.</p>
-<p><strong>Варианты операций:</strong><br />
-Теорема Пифагора.<br />
-Решение квадратного уравнения.<br />
-Поиск площади трапеции.<br />
-Поиск площади параллелограмма.</p>
-<p><strong>Порядок выбора варианта:</strong> <br />
-Выбирается по порядковому номеру в журнале (пятый студент получает вариант 1 и т.д.).</p>
-<p><strong>Требования:</strong><br />
-Обязательно использовать библиотеку socket.
-Реализовать с помощью протокола TCP.</p>
-<p>У меня вариант 4 - Поиск площади параллелограмма.</p>
-<h2 id="_2">Стэк реализации</h2>
-<ul>
-<li><code>Язык</code> - Python.</li>
-<li><code>Библиотека</code> - Socket.</li>
-<li><code>Протокол</code> - TCP.</li>
-</ul>
-<h2 id="_3">Запуск сервера</h2>
-<pre><code>python server.py
-</code></pre>
-<h2 id="_4">Запуск клиента</h2>
-<pre><code>python client.py
-</code></pre>
-<p>Затем клиенту предстоит ввести сначала значение стороны, к которой проведена высота. Далее - значение высоты. </p>
-<h2 id="_5">Код для сервера</h2>
-<pre><code>import socket
-
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-server_socket.bind(('localhost', 8080))
-
-server_socket.listen(1)
-print("Сервер запущен на порту 8080...")
-
-while True:
-    client_connection, client_address = server_socket.accept()
-    client_connection.send(
-        "Введите сначала сторону, к которой проведена высота,"
-        "а затем - высоту".encode()
-    )
-    request = client_connection.recv(1024).decode()
+<h1 id="fastapi-docker">Упаковка FastAPI приложения в Docker, Работа с источниками данных и Очереди</h1>
+<p>Цель: научиться упаковывать FastAPI приложение в Docker, интегрировать парсер данных с базой данных и вызывать парсер через API и очередь.  </p>
+<h3 id="1-fastapi-docker">Подзадача 1: Упаковка FastAPI приложения, базы данных и парсера данных в Docker</h3>
+<p>Реализация вызова парсера по http  </p>
+<pre><code>@app.post("/parse")
+async def parse(data: InputUrl):
     try:
-        a, h = map(float, request.split())
-        square = a * h
-        response = f'Площадь паралелограмма равна: {square:.2f}'
-    except ValueError:
-        response = "Ошибка: введите в каждой строке только одно число."
-
-    client_connection.sendall(response.encode())
-
-    client_connection.close()
+        count = await parse_and_save_book(data.url)
+        return {
+            "status": "success",
+            "books_parsed": count,
+            "message": f"Added {count} new books"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 </code></pre>
-<h2 id="_6">Код для клиента</h2>
-<pre><code>import socket
+<p>Оба сервиса (app и parser) используют одну сеть bookcrossing_network.  </p>
+<p>Парсер зависит от основного приложения (depends_on: app).</p>
+<p>Celery (из parser) может вызывать задачи, которые обрабатываются воркером.  </p>
+<p>app/Dockerfile</p>
+<pre><code>FROM python:3.9-slim
 
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect(('localhost', 8080))
+WORKDIR /app
 
-response = client_socket.recv(1024).decode()
-a = input("Сторона, к которой проведена высота: ")
-h = input("Высота: ")
-client_socket.send(f"{a} {h}".encode())
-result = client_socket.recv(1024)
-print(f'Ответ от сервера: {result.decode()}')
+ENV PYTHONPATH=/app
 
-client_socket.close()
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+
+COPY . .
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 </code></pre>
-<h1 id="_7">Описание реализации</h1>
-<p>Сервер создает сокет с помощью socket.AF_INET (IPv4) и socket.SOCK_STREAM (TCP), привязывается к адресу localhost и порту 8080.
-Сервер слушает подключения с помощью listen(1) и принимает клиентские соединения через accept(), отправляет клиенту инструкцию ввести сторону и высоту параллелограмма.
-Затем рассчитывает площадь параллелограмма по формуле a * h, где a — сторона, а h — высота.
-Сервер отправляет результат вычислений или сообщение об ошибке и закрывает соединение. <br />
-Клиент создает TCP-сокет и подключается к серверу через connect(('localhost', 8080)), получает инструкцию от сервера.
-Клиент вводит значения стороны и высоты, которые отправляются серверу.
-А затем получает результат вычислений от сервера и выводит его на экран.</p></div>
+<p>parser/Dockerfile  </p>
+<pre><code>FROM python:3.11
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+
+COPY ./app ./app
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "9000"]
+</code></pre>
+<p>Создание файла docker-compose.yml для управления оркестром сервисов, включающих FastAPI приложение, базу данных и парсер данных.<br />
+db – база данных PostgreSQL с настройками пользователя, пароля и имени БД (берутся из переменных окружения).
+Данные сохраняются в томе postgres_data.
+Проверка здоровья: pg_isready.</p>
+<p>celery – воркер Celery для асинхронных задач. Зависит от redis и db.
+Запускает воркер с логгированием info.
+redis – сервер Redis для кеширования или брокера сообщений Celery.</p>
+<p>app – основное приложение.
+Пробрасывает порт 8000.</p>
+<p>parser – отдельный сервис для парсинга книг.
+Зависит от db и app.</p>
+<pre><code>services:
+  db:
+    image: postgres:17
+    container_name: db
+    environment:
+      POSTGRES_USER: ${DB_ADMIN}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bookcrossing_network
+
+  celery:
+    build:
+      context: ./parser
+    container_name: celery-worker
+    command: celery -A app.celery_worker.celery_app worker --loglevel=info
+    depends_on:
+      - redis
+      - db
+    env_file:
+      - .env
+    volumes:
+      - ./parser/app:/app/app
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - bookcrossing_network
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - bookcrossing_network
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_ADMIN=${DB_ADMIN}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=db
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+    env_file:
+      - .env
+    volumes:
+      - ./app:/app/app
+    networks:
+      - bookcrossing_network
+
+  parser:
+    build:
+      context: ./parser
+      dockerfile: Dockerfile
+    container_name: parser
+    depends_on:
+      db:
+        condition: service_healthy
+      app:
+        condition: service_started
+    env_file:
+      - .env
+    volumes:
+      - ./parser:/app/parser
+    networks:
+      - bookcrossing_network
+
+volumes:
+  postgres_data:
+    external: true
+    name: postgres_data
+
+networks:
+  bookcrossing_network:
+</code></pre>
+<h3 id="2-fastapi">Подзадача 2: Вызов парсера из FastAPI</h3>
+<p>Добавление в FastAPI приложение ендпоинт, который принимает запросы с URL для парсинга от клиента, отправляет запрос парсеру (запущенному в отдельном контейнере) и возвращать ответ с результатом клиенту.  </p>
+<pre><code>@router.post("/parse")
+async def parse(request: RequestURL):
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post("http://parser:9000/parse", json={"url": request.url})
+            response.raise_for_status()
+            return response.json()
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=f"Parser error: {e.response.text}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+</code></pre>
+<p><img alt="img_3.png" src="../img_3.png" /></p>
+<h3 id="3-fastapi">Подзадача 3: Вызов парсера из FastAPI через очередь</h3>
+<pre><code>@app.post("/parse-async")
+async def start_parsing(data: InputUrl):
+    try:
+        logger.info(f"Starting parsing task for URL: {data.url}")
+        task = parse_url_task.delay(data.url)
+        logger.info(f"Task created with id: {task.id}")
+
+        return {
+            "status": "processing",
+            "task_id": task.id,
+            "message": "Parsing task started successfully",
+        }
+    except Exception as e:
+        logger.error(f"Failed to start task: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to start parsing task: {str(e)}"
+        )
+</code></pre>
+<p><img alt="img.png" src="../img.png" /><br />
+Создается объект AsyncResult, который связывается с задачей Celery по её task_id.
+celery_app – это экземпляр Celery, который управляет задачами.<br />
+Celery выносит парсинг в фоновый процесс, а Redis помогает управлять очередями задач и результатами.</p>
+<pre><code>@app.get("/task/{task_id}")
+async def get_task_status(task_id: str):
+    task_result = AsyncResult(task_id, app=celery_app)
+
+    response = {
+        "task_id": task_id,
+        "status": task_result.status,
+    }
+
+    if task_result.ready():
+        if task_result.successful():
+            response["result"] = task_result.result
+        else:
+            response["error"] = str(task_result.result)
+
+    return response
+</code></pre>
+<p><img alt="img_1.png" src="../img_1.png" />  </p>
+<pre><code>@router.get("/parsed-books")
+def get_parsed_books(session: Session = Depends(get_session)):
+    books = session.exec(select(RealBook)).all()
+    return books
+</code></pre>
+<p><img alt="img_2.png" src="../img_2.png" /></p></div>
         
         
     </div>
